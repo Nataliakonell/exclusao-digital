@@ -13,6 +13,42 @@ import com.exclusaodigital.Util.DatabaseConnection;
 
 public class CategoriaRepository {
 
+    public Categoria buscarPorNome(String nome) {
+        String sql = "SELECT * FROM categorias WHERE nome LIKE ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, "%" + nome + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar categoria por nome: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Categoria> buscarPorNomeParcial(String nomeParcial) {
+        List<Categoria> categorias = new ArrayList<>();
+        String sql = "SELECT * FROM categorias WHERE nome LIKE ? ORDER BY nome";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, "%" + nomeParcial + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    categorias.add(mapResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar categorias por nome parcial: " + e.getMessage());
+        }
+        return categorias;
+    }
 
 
     public List<Categoria> buscarTodos() {
