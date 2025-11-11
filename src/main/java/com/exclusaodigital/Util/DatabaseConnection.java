@@ -10,7 +10,6 @@ public class DatabaseConnection {
     private static final String USER = "postgres";
     private static final String PASSWORD = "1234";
 
-    // Método que retorna uma conexão pronta para uso
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }

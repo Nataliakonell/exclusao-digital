@@ -96,7 +96,6 @@ public class SubcategoriaRepository {
         return subcategorias;
     }
 
-    // Método auxiliar para mapear ResultSet para Subcategoria
     private Subcategoria mapResultSet(ResultSet rs, Categoria categoria) throws SQLException {
         return new Subcategoria(
                 rs.getInt("id"),

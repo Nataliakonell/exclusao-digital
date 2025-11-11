@@ -187,7 +187,6 @@ public class MotivoExclusaoRepository {
         return motivos;
     }
 
-    // Método auxiliar para mapear ResultSet para MotivoExclusao
     private MotivoExclusao mapResultSet(ResultSet rs, Subcategoria subcategoria) throws SQLException {
         return new MotivoExclusao(
                 rs.getInt("id"),
@@ -223,28 +222,23 @@ public class MotivoExclusaoRepository {
 
         List<Object> params = new ArrayList<>();
 
-        // Adiciona filtro de categoria se fornecido
         if (categoriaId > 0) {
             sql.append("AND c.id = ? ");
             params.add(categoriaId);
         }
 
-        // Adiciona filtro de subcategoria se fornecido
         if (subcategoriaId > 0) {
             sql.append("AND s.id = ? ");
             params.add(subcategoriaId);
         }
 
-        // Adiciona filtro do tipo de motivo
         sql.append("AND m.").append(tipoMotivo).append(" > 0 ");
 
-        // Ordena resultados primeiro por categoria, depois por subcategoria
         sql.append("ORDER BY c.nome, s.nome, m.").append(tipoMotivo).append(" DESC");
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
-            // Define os parâmetros
             for (int i = 0; i < params.size(); i++) {
                 ps.setInt(i + 1, (Integer) params.get(i));
             }

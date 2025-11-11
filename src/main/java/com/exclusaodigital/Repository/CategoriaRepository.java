@@ -69,7 +69,6 @@ public class CategoriaRepository {
         return categorias;
     }
 
-// Método auxiliar para mapear ResultSet para Categoria
     private Categoria mapResultSet(ResultSet rs) throws SQLException {
         return new Categoria(rs.getInt("id"), rs.getString("nome"));
     }
